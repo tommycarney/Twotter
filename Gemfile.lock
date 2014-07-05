@@ -96,7 +96,7 @@ GEM
       treetop (~> 1.4.8)
     mime-types (1.25.1)
     mini_portile (0.5.3)
-    minitest (5.3.3)
+    minitest (5.1.0)
     multi_json (1.9.3)
     multi_test (0.1.1)
     nokogiri (1.6.1)
@@ -203,7 +203,7 @@ DEPENDENCIES
   faker (= 1.1.2)
   jbuilder (= 1.0.2)
   jquery-rails (= 3.0.4)
-  minitest
+  minitest (= 5.1.0)
   pg (= 0.15.1)
   rails (= 4.1.0)
   rails_12factor (= 0.0.2)
