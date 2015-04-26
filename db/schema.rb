@@ -19,6 +19,7 @@ ActiveRecord::Schema.define(version: 20150426071527) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "in_reply_to"
+    t.integer  "in_reply_to_id"
   end
 
   create_table "relationships", force: true do |t|
