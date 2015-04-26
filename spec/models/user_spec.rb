@@ -199,4 +199,32 @@ describe User do
 			its(:followers) { should include(@user) }
 		end
 	end
+
+	describe "handling replies" do
+		before(:each) do 
+			@reply_to_user = FactoryGirl.create(:userToReplyTo)
+			 @user_with_strange_name = FactoryGirl.create(:user, email:FactoryGirl.generate(:email), name: "Quack van Duck")
+		end
+
+		it "should have a Shorthand Username" do
+			@reply_to_user.shorthand.should == "Donald_Duck"
+		end
+
+		it "should provide a Shorthand Username for names with three parts" do
+			@user_with_strange_name.shorthand.should == "Quack_van_Duck"
+		end
+
+		it "should be findably by shorthand name" do
+			user = User.find_by_shorthand("Donald_Duck")
+			user.should == @reply_to_user
+		end
+
+		it "should scope replies to self" do
+			@user.save!
+			m = @user.microposts.create(content:"@Donald_Duck to donald")
+			m.in_reply_to.should == @reply_to_user
+			@reply_to_user.replies.should == [m]
+		end
+
+	end
 end
