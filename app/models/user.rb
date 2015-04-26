@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
 	has_many :followed_users, through: :relationships, source: :followed
 	has_many :followers, through: :reverse_relationships, source: :follower
 	has_many :replies, foreign_key: "in_reply_to_id", class_name: "Micropost"
-	before_save { self.email = email.downcase }
+	before_save { self.email.downcase! }
 	before_create :create_remember_token
 	validates :name, presence: true, length: {maximum: 50 }
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i

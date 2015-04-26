@@ -14,12 +14,6 @@ class Micropost < ActiveRecord::Base
 	validates :user_id, presence: true
 
 	
-	def extract_in_reply_to
-		if match = @@reply_to_regexp.match(content)
-			user = User.find_by_shorthand(match[1])
-			self.in_reply_to = user if user
-		end
-	end
 
 	private
 
@@ -35,6 +29,13 @@ class Micropost < ActiveRecord::Base
                        WHERE follower_id = :user_id)
 		where("user_id IN (#{followed_ids}) OR user_id = :user_id OR in_reply_to_id = :user_id",
 			{ :user_id => user})
+	end
+
+	def extract_in_reply_to
+		if match = @@reply_to_regexp.match(content)
+			user = User.find_by_shorthand(match[1])
+			self.in_reply_to = user if user
+		end
 	end
 
 	
