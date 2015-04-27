@@ -6,7 +6,10 @@ class MicropostsController < ApplicationController
 
 	def create
 		message = micropost_params[:content]
-		if 
+		match = direct_message(message)
+		if match
+			
+
 
 		@micropost = current_user.microposts.build(micropost_params)
 		if @micropost.save
@@ -35,6 +38,8 @@ class MicropostsController < ApplicationController
 	end
 
 	def direct_message(message)
-
+		if match = @@direct_message_regexp.match(message)
+			return match
+		end
 	end
 end
