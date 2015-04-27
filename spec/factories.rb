@@ -21,6 +21,20 @@ FactoryGirl.define do
     	user.password_confirmation "foobar"
  	end
 
+ 	factory :sender, class: User do | user |
+    	user.name "Thomas Thompson"
+   		user.email "test@tommycarney.com"
+   		user.password "foobar"
+    	user.password_confirmation "foobar"
+ 	end
+
+ 	factory :recipient, class: User do | user |
+    	user.name "Test McTeston"
+   		user.email "test2@tommycarney.com"
+   		user.password "foobar"
+    	user.password_confirmation "foobar"
+ 	end
+
  	sequence :email do |n|
     	"person-#{n}@example.com"
     end

@@ -1,6 +1,5 @@
 class Micropost < ActiveRecord::Base
 	@@reply_to_regexp = /\A@([^\s]*)/
-	
 	belongs_to :user
 	belongs_to :in_reply_to, class_name: "User"
 
