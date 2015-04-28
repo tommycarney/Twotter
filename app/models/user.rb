@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
 	has_many :sent_messages, foreign_key: "sender_id", class_name: "Message"
 
 	before_save { self.email.downcase! }
-	before_create :create_remember_token
+	before_create { generate_token(:remember_token) }
 	validates :name, presence: true, length: {maximum: 50 }
 	VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-]+(?:\.[a-z\d\-]+)*\.[a-z]+\z/i
 	validates :email, presence: true, format: { with: VALID_EMAIL_REGEX },
@@ -57,8 +57,11 @@ class User < ActiveRecord::Base
 	
 	private
 
-	def create_remember_token
-		self.remember_token = User.digest(User.new_remember_token)
-	end
+
+	def generate_token(column)
+		begin
+			self[column] = User.digest(User.new_remember_token)
+		end while User.exists?(column => self[column])
+	end	
 
 end

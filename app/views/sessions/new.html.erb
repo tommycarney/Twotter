@@ -11,8 +11,16 @@
       <%= f.label :password %>
       <%= f.password_field :password %>
 
+
+
       <%= f.submit "Sign in", class: "btn btn-large btn-primary" %>
+      <div class="field">
+        <%= check_box_tag :remember_me, 1, params[:remember_me] %>
+        <%= label_tag :remember_me %>
+      </div>
     <% end %>
+
+    
 
     <p>New user? <%= link_to "Sign up now!", signup_path %></p>
   </div>
