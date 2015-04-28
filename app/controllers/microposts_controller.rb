@@ -27,7 +27,7 @@ class MicropostsController < ApplicationController
 	end
 
 	def create_message(match)
-		recipient = User.find_by_shorthand(match[1]).id
+		recipient = User.find_by_shorthand(match[1])
 
 		if recipient
 			message = Message.new(sender_id: current_user.id, recipient_id: recipient.id, message_text: match[2].strip)

@@ -1,0 +1,15 @@
+<h2>Sent Messages</h2>
+
+<ul>
+<% @sent_messages.each do |message| %>
+	<li><%= message.message_text %> sent to <%= message.recipient.name %> <%= time_ago_in_words(message.created_at)%> ago</li>
+<% end %>
+</ul>
+
+<h2>Received Messages</h2>
+
+<ul>
+<% @received_messages.each do |message| %>
+	<li><%= message.message_text %> sent by <%= message.sender.name %> <%= time_ago_in_words(message.created_at)%> ago</li>
+<% end %>
+</ul>
