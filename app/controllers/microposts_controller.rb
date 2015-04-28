@@ -1,15 +1,15 @@
 class MicropostsController < ApplicationController
 	before_action :signed_in_user, only: [:create, :destroy]
 	before_action :correct_user,	only: [:destroy]
-	@@direct_message_regexp = /\Ad @([^\s]*)/
+	@@direct_message_regexp = /\Ad @([^\s]*)([\s\S]*)/
 	
 
 	def create
-		message = micropost_params[:content]
-		match = direct_message(message)
-		if match
-			
-
+		check_content_for_message = direct_message(micropost_params[:content])
+		if check_content_for_message
+			create_message(check_content_for_message)
+			return
+		end
 
 		@micropost = current_user.microposts.build(micropost_params)
 		if @micropost.save
@@ -26,6 +26,26 @@ class MicropostsController < ApplicationController
 		redirect_to root_url
 	end
 
+	def create_message(match)
+		recipient = User.find_by_shorthand(match[1]).id
+
+		if recipient
+			message = Message.new(sender_id: current_user.id, recipient_id: recipient.id, message_text: match[2].strip)
+
+			if message.save
+				flash[:success] = "You just sent a message to #{recipient.name}!"
+				redirect_to root_url
+			else
+				flash[:error] = "Sorry, there was an error in sending the message!"
+				redirect_to root_url
+			end
+		else
+			flash[:error] = "We couldn't find #{match[1]} in Twotter! You should invite #{match[1]}"
+			redirect_to root_url
+		end
+
+	end	
+
 	private
 
 	def micropost_params
@@ -38,7 +58,7 @@ class MicropostsController < ApplicationController
 	end
 
 	def direct_message(message)
-		if match = @@direct_message_regexp.match(message)
+		if match =/\Ad @([^\s]*)([\s\S]*)/.match(message)
 			return match
 		end
 	end
