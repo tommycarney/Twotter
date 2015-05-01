@@ -24,9 +24,19 @@ describe "MicropostPages" do
 
 		describe "with valid information" do
 
-			before { fill_in 'micropost_content', with: "Lorem ipsum" }
+			before {fill_in 'micropost_content', with: "Lorem ipsum" }
 			it "should create a micropost" do
 				expect { click_button "Post"}.to change(Micropost, :count).by(1)
+			end
+		end
+
+		describe "with a direct message" do
+
+			before { 
+				@reply_to_user = FactoryGirl.create(:userToReplyTo)
+				fill_in 'micropost_content', with: "d @Donald_Duck Lorem ipsum" }
+			it "should create a micropost" do
+				expect { click_button "Post"}.to change(Micropost, :count).by(0)
 			end
 		end
 	end
